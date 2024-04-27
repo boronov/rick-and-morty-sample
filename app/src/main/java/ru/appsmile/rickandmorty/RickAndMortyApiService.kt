@@ -19,10 +19,14 @@ data class ResultItem(
     val name: String,
     @SerializedName("status")
     val status: String,
+    @SerializedName("species")
+    val species: String,
     @SerializedName("image")
     val image: String,
+
     @SerializedName("origin")
     val origin: LocationItem,
+
     @SerializedName("location")
     val location: LocationItem
 )

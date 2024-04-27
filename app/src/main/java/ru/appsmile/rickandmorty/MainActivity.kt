@@ -3,6 +3,7 @@ package ru.appsmile.rickandmorty
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -10,6 +11,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import ru.appsmile.RetrofitApi
+import ru.appsmile.rickandmorty.adapter.RickAndMortyAdapter
 import ru.appsmile.rickandmorty.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -68,36 +71,25 @@ class MainActivity : AppCompatActivity() {
 
          Log.d("TAG_USER", "userJsonString: $userJsonString")*/
 
-
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://rickandmortyapi.com/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        binding.root.layoutManager = LinearLayoutManager(this)
 
 
-        val rickAndMortyApiService = retrofit.create(RickAndMortyApiService::class.java)
-
-        binding.textViewFirstName.text = "Loading..."
-        rickAndMortyApiService.getCharacter().enqueue(object : Callback<Item> {
+        RetrofitApi.getCharacter().enqueue(object : Callback<Item> {
             override fun onResponse(p0: Call<Item>, p1: Response<Item>) {
 
                 if (p1.isSuccessful) {
                     val resultList = p1.body()?.results ?: emptyList()
-
-                    Log.d("TAG_TEST", "isSuccessful: ${resultList}")
-                    Log.d("TAG_TEST", "isSuccessful: ${resultList.size}")
-                    binding.textViewFirstName.text = resultList.randomOrNull()?.name
-
+                    binding.root.adapter = RickAndMortyAdapter(resultList)
                     // все океей
                 } else {
-                    binding.textViewFirstName.text = "!isSuccessful: что то пошло не так"
+
                     Log.d("TAG_TEST", "!isSuccessful: что то пошло не так")
                     // что то пошло не так
                 }
             }
 
             override fun onFailure(p0: Call<Item>, p1: Throwable) {
-                binding.textViewFirstName.text = "вообще что то пошло не так ${p1.message}"
+
                 Log.d("TAG_TEST", "onFailure: вообще что то пошло не так ${p1.message}")
             }
         })
