@@ -3,19 +3,19 @@ package ru.appsmile
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.appsmile.rickandmorty.Item
-import ru.appsmile.rickandmorty.RickAndMortyApiService
+import ru.appsmile.rickandmorty.Post
+import ru.appsmile.rickandmorty.PostApiService
 
 object RetrofitApi {
     private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://rickandmortyapi.com/api/")
+        .baseUrl("https://jsonplaceholder.typicode.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
 
-    private val rickAndMortyApiService = retrofit.create(RickAndMortyApiService::class.java)
+    private val rickAndMortyApiService = retrofit.create(PostApiService::class.java)
 
-    fun getCharacter(): Call<Item> = rickAndMortyApiService.getCharacter()
+    fun getAllPost(): Call<List<Post>> = rickAndMortyApiService.getAllPost()
 }
 
 
