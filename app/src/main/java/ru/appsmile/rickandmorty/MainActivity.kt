@@ -3,7 +3,9 @@ package ru.appsmile.rickandmorty
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -79,7 +81,11 @@ class MainActivity : AppCompatActivity() {
 
                 if (p1.isSuccessful) {
                     val resultList = p1.body()?.results ?: emptyList()
-                    binding.root.adapter = RickAndMortyAdapter(resultList)
+                    binding.root.adapter =
+                        RickAndMortyAdapter(resultList, listener = { item, name,  ->
+                            Toast.makeText(this@MainActivity, name, Toast.LENGTH_SHORT)
+                                .show()
+                        })
                     // все океей
                 } else {
 
@@ -94,4 +100,5 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
 }

@@ -11,7 +11,7 @@ import ru.appsmile.rickandmorty.R
 import ru.appsmile.rickandmorty.ResultItem
 import ru.appsmile.rickandmorty.databinding.ItemRickAndMortyBinding
 
-class RickAndMortyAdapter(private val results: List<ResultItem>) :
+class RickAndMortyAdapter(private val results: List<ResultItem>, private val listener: (item: ResultItem, name: String) -> Unit) :
     RecyclerView.Adapter<RickAndMortyAdapter.ItemViewHolder>() {
     class ItemViewHolder(val binding: ItemRickAndMortyBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -47,6 +47,11 @@ class RickAndMortyAdapter(private val results: List<ResultItem>) :
 
             textViewLastKnownLocation.text = currentItem.origin.name
             textViewFirstKnownLocation.text = currentItem.location.name
+
+
+            root.setOnClickListener {
+                listener(currentItem, currentItem.name)
+            }
         }
     }
 
